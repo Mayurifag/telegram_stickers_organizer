@@ -30,7 +30,7 @@ async def process_sticker(message: Message, state: FSMContext) -> None:
         )
         await state.update_data(sticker_pack=sticker_pack)
         await message.answer(
-            "Введите название, которое хотите присвоить набору стикеров"
+            "Enter the new name for the sticker pack. Do not use HTML tags."
         )
         await state.set_state(RenameStates.waiting_for_new_title)
     else:
@@ -51,7 +51,8 @@ async def process_new_title(message: Message, state: FSMContext) -> None:
     if success and isinstance(new_sticker_set, StickerSet):
         await message.answer_sticker(new_sticker_set.stickers[0].file_id)
         await message.answer(
-            f"Sticker pack '{sticker_pack}' has been copied to a new pack named '{new_sticker_set.name}' with title '{new_title}'.",
+            f"Sticker pack <b>{sticker_pack}</b> has been copied to a new pack named "
+            f"'<b>{new_sticker_set.name}</b>' with title '<b>{new_title}</b>'.",
             reply_markup=kb_start.kb_menu,
         )
     else:

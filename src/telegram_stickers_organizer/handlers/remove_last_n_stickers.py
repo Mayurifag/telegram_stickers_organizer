@@ -61,7 +61,8 @@ async def process_number(message: Message, state: FSMContext) -> None:
 
         if number >= sticker_count:
             await message.answer(
-                f"Error: You can't remove {number} stickers from a set with {sticker_count} stickers. Please try again with a smaller number.",
+                f"Error: You can't remove {number} stickers from a set with {sticker_count} stickers. "
+                "Please try again with a smaller number.",
                 reply_markup=kb_start.kb_menu,
             )
             await state.clear()

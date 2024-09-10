@@ -93,7 +93,8 @@ async def process_second_sticker(message: Message, state: FSMContext) -> None:
 
         if success and isinstance(merged_set, StickerSet):
             await message.answer(
-                f"Stickersets '{first_sticker_set}' and '{second_sticker_set}' have been successfully merged into '{merged_set.name}'."
+                f"Stickersets '{first_sticker_set}' and '{second_sticker_set}' "
+                f"have been successfully merged into '{merged_set.name}'."
             )
             await message.answer_sticker(
                 merged_set.stickers[0].file_id, reply_markup=kb_start.kb_menu

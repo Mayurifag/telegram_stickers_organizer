@@ -17,3 +17,8 @@ remove:
 start: start-ngrok
 	@if [ ! -f .env ]; then cp .env.example .env; echo "Created .env file, edit it and run "make start" again"; exit 1; fi
 	uv run src/telegram_stickers_organizer/main.py
+
+.PHONY: lint
+lint:
+	uvx ruff
+	uvx flake8
