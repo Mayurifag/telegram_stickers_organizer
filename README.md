@@ -1,20 +1,72 @@
-# Telegram multitool for stickers
+# Telegram Stickers Organizer Bot
 
-## Description
+A versatile Telegram bot for managing and organizing sticker packs.
 
-This is a bot which may do lots of things with telegram stickers.
+## Features
 
-- Add/Remove stickers to your stickerpacks
-- Duplicate stickerpacks with new name with a new link (steal them)
-- ... ... ...
+- Rename sticker packs
+- Merge multiple sticker packs
+- Remove last N stickers from a pack
+- Edit individual stickers in a pack (change emoji, delete)
+- Duplicate sticker packs with a new name and link
 
-## Setup local environment
+## Prerequisites
 
-Install required python, `uv`, `ngrok` and `jq`.
+- Python 3.12 or higher
+- `uv` package manager
+- `ngrok` and `jq` for local development
 
-## How it was built
+## Installation
 
-Install `uv`.
-`uv init telegram-stickers-organizer`
-`uv add aiogram`
-`uv add python-decouple`
+1. Clone the repository:
+
+```sh
+git clone https://github.com/yourusername/telegram-stickers-organizer.git
+cd telegram-stickers-organizer
+```
+
+2. Install dependencies:
+
+```sh
+uv venv
+uv pip install -r requirements.txt
+```
+
+3. Set up environment variables:
+
+```sh
+cp .env.example .env
+```
+
+Edit the `.env` file and add your Telegram Bot Token and other required
+variables.
+
+## Usage
+
+To start the bot locally:
+
+```sh
+make start
+```
+
+This command will start ngrok and run the bot.
+
+## Development
+
+### Linting
+
+To lint the code:
+
+```sh
+make lint
+```
+
+This will run both `ruff` and `flake8`.
+
+## Project Structure
+
+- `src/telegram_stickers_organizer/`: Main application code
+  - `handlers/`: Command handlers
+  - `interactors/`: Business logic
+  - `utils/`: Utility functions
+  - `keyboard/`: Keyboard layouts
