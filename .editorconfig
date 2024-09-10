@@ -13,3 +13,6 @@ insert_final_newline = true
 
 [{Makefile,makefiles/*.mk}]
 indent_style = tab
+
+[*.py]
+indent_size = 4

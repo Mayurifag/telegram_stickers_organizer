@@ -1,7 +1,7 @@
-from aiogram import Router
 from aiogram.filters import CommandStart
 from aiogram.types import Message
 from ..keyboard import kb_start
+from aiogram import Router
 
 router = Router()
 

@@ -1,10 +1,7 @@
 from aiogram.types import InputSticker
-from ..config import BOT_TOKEN
-from aiogram import Bot
+from ..dispatcher import bot
 import random
 import string
-
-bot = Bot(token=BOT_TOKEN)
 
 
 async def copy_sticker_set(user_id: int, old_name: str, new_title: str):

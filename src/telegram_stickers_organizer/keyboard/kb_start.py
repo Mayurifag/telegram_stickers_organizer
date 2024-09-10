@@ -1,12 +1,30 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-from .constants import FILM_SPIZDILI_CALLBACK, FILM_SPIZDILI_TEXT
+from ..constants import (
+    RENAME_STICKERSET_CALLBACK,
+    RENAME_STICKERSET_TEXT,
+    MERGE_STICKERSETS_CALLBACK,
+    MERGE_STICKERSETS_TEXT,
+    REMOVE_LAST_STICKERS_CALLBACK,
+    REMOVE_LAST_STICKERS_TEXT,
+)
 
 kb_menu = InlineKeyboardMarkup(
     inline_keyboard=[
         [
             InlineKeyboardButton(
-                text=FILM_SPIZDILI_TEXT, callback_data=FILM_SPIZDILI_CALLBACK
+                text=RENAME_STICKERSET_TEXT, callback_data=RENAME_STICKERSET_CALLBACK
             ),
-        ]
+        ],
+        [
+            InlineKeyboardButton(
+                text=MERGE_STICKERSETS_TEXT, callback_data=MERGE_STICKERSETS_CALLBACK
+            ),
+        ],
+        [
+            InlineKeyboardButton(
+                text=REMOVE_LAST_STICKERS_TEXT,
+                callback_data=REMOVE_LAST_STICKERS_CALLBACK,
+            ),
+        ],
     ]
 )

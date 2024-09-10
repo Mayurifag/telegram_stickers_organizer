@@ -2,7 +2,13 @@ import logging
 from aiohttp import web
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
 from telegram_stickers_organizer.config import WEBHOOK_PATH, HOST, PORT
-from telegram_stickers_organizer.handlers import start, message, rename_stickerset
+from telegram_stickers_organizer.handlers import (
+    start,
+    message,
+    rename_stickerset,
+    merge_stickersets,
+    remove_last_n_stickers,
+)
 from telegram_stickers_organizer.dispatcher import dp, bot
 
 
@@ -17,6 +23,8 @@ def main() -> None:
     dp.include_routers(
         start.router,
         rename_stickerset.router,
+        merge_stickersets.router,
+        remove_last_n_stickers.router,
         message.router,
     )
 
