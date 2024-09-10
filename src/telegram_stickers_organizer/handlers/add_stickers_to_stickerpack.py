@@ -63,7 +63,7 @@ async def process_stickerpack_selection(
     await state.update_data(current_set=set_name)
     # TODO: add button to cancel adding stickers
     await callback_query.message.edit_text(
-        f"Please send a sticker to add to the set {sticker_set['title']}."
+        f"Please send a sticker to add to the set {sticker_set.title}."
     )
     await state.set_state(AddStickersStates.adding_stickers)
 
@@ -81,10 +81,11 @@ async def process_sticker(message: Message, state: FSMContext) -> None:
     try:
         await add_stickers_to_set(user_id, set_name, [message.sticker])
         sticker_set = await get_sticker_set(set_name)
+        await message.answer_sticker(sticker_set.stickers[-1].file_id)
         sticker_count = len(sticker_set.stickers)
 
         await message.answer(
-            f"Sticker added successfully. The set now has <b>{sticker_count}/120</b> stickers.\n"
+            f"Sticker added successfully. The set '{sticker_set.title}' now has <b>{sticker_count}/120</b> stickers.\n"
             "Send another sticker to add, or use the buttons below.",
             reply_markup=kb_add_stickers_to_stickerpack_actions,
         )
@@ -103,7 +104,7 @@ async def finish_adding_stickers(
     set_name = data["current_set"]
     sticker_set = await get_sticker_set(set_name)
     await callback_query.message.edit_text(
-        f"Finished adding stickers to the set: {sticker_set['title']}.",
+        f"Finished adding stickers to the set: {sticker_set.title}.",
         reply_markup=kb_start.kb_menu,
     )
     await state.clear()
@@ -126,12 +127,15 @@ async def remove_previous_sticker(
             await bot.delete_sticker_from_set(last_sticker.file_id)
             sticker_set = await get_sticker_set(set_name)
             sticker_count = len(sticker_set.stickers)
-            await callback_query.message.edit_text(
-                f"Previous sticker removed. The set now has {sticker_count}/120 stickers.\n"
+            await callback_query.message.answer_sticker(
+                sticker_set.stickers[-1].file_id
+            )
+            await callback_query.message.answer(
+                f"Previous sticker removed from the set '{sticker_set.title}'. The set now has {sticker_count}/120 stickers.\n"
                 "Send another sticker to add it.",
                 reply_markup=callback_query.message.reply_markup,
             )
         else:
-            await callback_query.message.edit_text("No stickers to remove.")
+            await callback_query.message.answer("No stickers to remove.")
     except Exception as e:
-        await callback_query.message.edit_text(f"Error removing sticker: {str(e)}")
+        await callback_query.message.answer(f"Error removing sticker: {str(e)}")
