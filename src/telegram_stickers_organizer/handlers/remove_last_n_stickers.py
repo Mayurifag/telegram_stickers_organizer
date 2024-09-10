@@ -4,9 +4,9 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.filters import StateFilter
 from ..constants import REMOVE_LAST_STICKERS_CALLBACK
-from ..dispatcher import bot
 from ..keyboard import kb_start
 from ..interactors.remove_last_stickers import remove_last_stickers
+from ..utils.sticker_helpers import is_sticker_set_owned_by_bot, get_sticker_set
 
 router = Router()
 
@@ -30,8 +30,8 @@ async def remove_last_stickers_start(
 @router.message(StateFilter(RemoveLastStickersStates.waiting_for_sticker))
 async def process_sticker(message: Message, state: FSMContext) -> None:
     if message.sticker:
-        sticker_set = await bot.get_sticker_set(message.sticker.set_name)
-        if not sticker_set.name.endswith(f"_by_{(await bot.get_me()).username}"):
+        sticker_set = await get_sticker_set(message.sticker.set_name)
+        if not await is_sticker_set_owned_by_bot(sticker_set.name):
             await message.answer(
                 "Error: The stickerset must be created/renamed by this bot. Please try again.",
                 reply_markup=kb_start.kb_menu,

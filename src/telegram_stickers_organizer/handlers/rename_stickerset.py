@@ -10,7 +10,6 @@ from ..interactors.copy_sticker_set import copy_sticker_set
 router = Router()
 
 
-# Define states
 class RenameStates(StatesGroup):
     waiting_for_sticker = State()
     waiting_for_new_title = State()

@@ -8,7 +8,7 @@ router = Router()
 
 @router.message(CommandStart())
 async def command_start_handler(message: Message) -> None:
-    await message.delete()  # Remove the previous user /start message
+    await message.delete()  # Remove user's /start message
     await message.answer(
         "Бот работает, выберите команду", reply_markup=kb_start.kb_menu
     )

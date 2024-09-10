@@ -7,6 +7,7 @@ from ..constants import MERGE_STICKERSETS_CALLBACK, MAX_STICKERS_IN_STICKERSET
 from ..dispatcher import bot
 from ..keyboard import kb_start
 from ..interactors.merge_sticker_sets import merge_sticker_sets
+from ..utils.sticker_helpers import is_sticker_set_owned_by_bot, get_sticker_set
 
 router = Router()
 
@@ -19,7 +20,7 @@ class MergeStates(StatesGroup):
 @router.callback_query(F.data == MERGE_STICKERSETS_CALLBACK)
 async def merge_stickersets(callback_query: CallbackQuery, state: FSMContext) -> None:
     await callback_query.answer()
-    await callback_query.message.edit_text(
+    await callback_query.message.answer(
         "Please send a sticker from the first stickerset."
     )
     await state.set_state(MergeStates.waiting_for_first_sticker)
@@ -28,8 +29,8 @@ async def merge_stickersets(callback_query: CallbackQuery, state: FSMContext) ->
 @router.message(StateFilter(MergeStates.waiting_for_first_sticker))
 async def process_first_sticker(message: Message, state: FSMContext) -> None:
     if message.sticker:
-        sticker_set = await bot.get_sticker_set(message.sticker.set_name)
-        if not sticker_set.name.endswith(f"_by_{(await bot.get_me()).username}"):
+        sticker_set = await get_sticker_set(message.sticker.set_name)
+        if not await is_sticker_set_owned_by_bot(sticker_set.name):
             await message.answer(
                 "Error: The first stickerset must be created/renamed by this bot. Please try again.",
                 reply_markup=kb_start.kb_menu,
