@@ -9,6 +9,7 @@ A versatile Telegram bot for managing and organizing sticker packs.
 - Remove last N stickers from a pack
 - Edit individual stickers in a pack (change emoji, delete)
 - Duplicate sticker packs with a new name and link
+- Convenient way to add stickers to renamed stolen sticker pack
 
 ## Prerequisites
 
@@ -63,3 +64,5 @@ This will run both `ruff` and `flake8`.
   - `interactors/`: Business logic
   - `utils/`: Utility functions
   - `keyboard/`: Keyboard layouts
+  - `middlewares/`: Middleware components
+  - `repositories/`: Data storage and retrieval

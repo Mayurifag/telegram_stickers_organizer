@@ -4,5 +4,5 @@ BOT_TOKEN = config("BOT_TOKEN")
 HOST = config("HOST")
 PORT = config("PORT", cast=int)
 BASE_URL = config("BASE_URL")
-ADMIN_ID = config("ADMIN_ID", cast=int)
 WEBHOOK_PATH = f"/{BOT_TOKEN}"
+ALLOWED_USER_IDS = [int(id) for id in config("ALLOWED_USER_IDS", cast=str).split(",")]
