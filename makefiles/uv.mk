@@ -25,5 +25,5 @@ start: start-ngrok
 
 .PHONY: lint
 lint:
-	uvx ruff
+	uvx ruff check
 	uvx flake8

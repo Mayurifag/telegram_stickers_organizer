@@ -8,6 +8,8 @@ from ..constants import (
     REMOVE_LAST_STICKERS_TEXT,
     EDIT_STICKERPACK_CALLBACK,
     EDIT_STICKERPACK_TEXT,
+    ADD_STICKERS_TO_STICKERPACK_CALLBACK,
+    ADD_STICKERS_TO_STICKERPACK_TEXT,
 )
 
 kb_menu = InlineKeyboardMarkup(
@@ -32,6 +34,12 @@ kb_menu = InlineKeyboardMarkup(
             InlineKeyboardButton(
                 text=EDIT_STICKERPACK_TEXT,
                 callback_data=EDIT_STICKERPACK_CALLBACK,
+            ),
+        ],
+        [
+            InlineKeyboardButton(
+                text=ADD_STICKERS_TO_STICKERPACK_TEXT,
+                callback_data=ADD_STICKERS_TO_STICKERPACK_CALLBACK,
             ),
         ],
     ]

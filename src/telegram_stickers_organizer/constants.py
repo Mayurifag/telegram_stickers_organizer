@@ -11,3 +11,6 @@ REMOVE_LAST_STICKERS_TEXT = "Удалить последние N стикеро�
 
 EDIT_STICKERPACK_CALLBACK = "edit_stickerpack"
 EDIT_STICKERPACK_TEXT = "Редактировать стикерпак"
+
+ADD_STICKERS_TO_STICKERPACK_CALLBACK = "add_stickers_to_stickerpack"
+ADD_STICKERS_TO_STICKERPACK_TEXT = "Add stickers to stickerpack"

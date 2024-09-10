@@ -9,6 +9,7 @@ from telegram_stickers_organizer.handlers import (
     merge_stickersets,
     remove_last_n_stickers,
     edit_stickerpack,
+    add_stickers_to_stickerpack,
 )
 from telegram_stickers_organizer.dispatcher import dp, bot
 
@@ -27,6 +28,7 @@ def main() -> None:
         merge_stickersets.router,
         remove_last_n_stickers.router,
         edit_stickerpack.router,
+        add_stickers_to_stickerpack.router,
         message.router,
     )
 
