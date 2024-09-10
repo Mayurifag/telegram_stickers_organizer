@@ -8,9 +8,11 @@ from ..keyboard import kb_start
 from ..keyboard.kb_edit_stickerpack import (
     kb_edit_stickerpack_inline_number,
     kb_edit_stickerpack_actions_for_sticker,
+    kb_edit_stickerpack_actions_for_sticker_emoji,
 )
 from ..utils.sticker_helpers import is_sticker_set_owned_by_bot, get_sticker_set
 from ..dispatcher import bot
+import emoji
 
 router = Router()
 
@@ -83,16 +85,28 @@ async def process_start_index(
 
 
 async def show_sticker(
-    message: Message, state: FSMContext, sticker_set: StickerSet, index: int
+    update: Message | CallbackQuery,
+    state: FSMContext,
+    sticker_set: StickerSet,
+    index: int,
 ):
     sticker = sticker_set.stickers[index]
     emoji = sticker.emoji if sticker.emoji else "No emoji"
 
-    await message.answer_sticker(sticker.file_id)
-    await message.answer(
-        f"Sticker {index + 1}/{len(sticker_set.stickers)}. Its emoji: {emoji}",
-        reply_markup=kb_edit_stickerpack_actions_for_sticker,
-    )
+    if isinstance(update, CallbackQuery):
+        await update.message.answer_sticker(sticker.file_id)
+        await update.message.answer(
+            f"Sticker {index + 1}/{len(sticker_set.stickers)}. Its emoji: {emoji}",
+            reply_markup=kb_edit_stickerpack_actions_for_sticker,
+        )
+        await update.answer()
+    else:
+        await update.answer_sticker(sticker.file_id)
+        await update.answer(
+            f"Sticker {index + 1}/{len(sticker_set.stickers)}. Its emoji: {emoji}",
+            reply_markup=kb_edit_stickerpack_actions_for_sticker,
+        )
+
     await state.set_state(EditStickerpackStates.editing_sticker)
 
 
@@ -113,7 +127,8 @@ async def process_edit_action(callback_query: CallbackQuery, state: FSMContext) 
         await show_sticker(callback_query.message, state, sticker_set, current_index)
     elif action == "edit_emoji":
         await callback_query.message.answer(
-            "Please send the new emoji list for this sticker."
+            "Please send the new single emoji for this sticker",
+            reply_markup=kb_edit_stickerpack_actions_for_sticker_emoji,
         )
         await state.set_state(EditStickerpackStates.waiting_for_emoji)
     elif action == "next":
@@ -137,27 +152,25 @@ async def process_edit_action(callback_query: CallbackQuery, state: FSMContext) 
         await callback_query.answer("Unknown action")
 
 
-# TODO: ability to remove emoji
 @router.message(StateFilter(EditStickerpackStates.waiting_for_emoji))
-async def process_new_emoji(message: Message, state: FSMContext) -> None:
-    new_emoji = message.text.strip()
-
-    # TODO: check if emoji is valid, size = 1, etc. with emoji library
-    # if len(new_emoji) != 1:
-    #     await message.answer("Please send a single emoji.")
-    #     return
-
+@router.callback_query(F.data == "cancel_emoji_edit")
+async def process_new_emoji(update: Message | CallbackQuery, state: FSMContext) -> None:
     data = await state.get_data()
     sticker_set_name = data["sticker_set"]
     current_index = data["current_index"]
     sticker_set = await get_sticker_set(sticker_set_name)
     sticker = sticker_set.stickers[current_index]
 
-    try:
-        await bot.set_sticker_emoji_list(sticker.file_id, [new_emoji])
-        await message.answer("Emoji updated successfully.")
-    except Exception as e:
-        await message.answer(f"Error updating emoji: {str(e)}")
-
-    sticker_set = await get_sticker_set(sticker_set_name)
-    await show_sticker(message, state, sticker_set, current_index)
+    if isinstance(update, Message):  # new emoji sent by user
+        new_emoji = update.text.strip()
+        if len(new_emoji) == 1 and new_emoji in emoji.UNICODE_EMOJI_ENGLISH:
+            try:
+                await bot.set_sticker_emoji_list(sticker.file_id, [new_emoji])
+                await update.answer("Emoji updated successfully.")
+                await show_sticker(update, state, sticker_set, current_index)
+            except Exception as e:
+                await update.answer(f"Error updating emoji: {str(e)}")
+        else:
+            await update.answer("Please send a single valid emoji.")
+    elif update.data == "cancel_emoji_edit":
+        await show_sticker(update, state, sticker_set, current_index)

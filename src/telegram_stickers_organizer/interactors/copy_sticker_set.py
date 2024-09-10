@@ -8,6 +8,7 @@ from ..utils.sticker_helpers import (
     add_stickers_to_set,
 )
 from ..dispatcher import bot
+from ..repositories.stickers_repository import db_save_sticker_set
 
 
 async def copy_sticker_set(user_id: int, old_name: str, new_title: str):
@@ -17,6 +18,8 @@ async def copy_sticker_set(user_id: int, old_name: str, new_title: str):
 
         await create_sticker_set(user_id, new_set_name, new_title, original_set)
         new_sticker_set = await get_sticker_set(new_set_name)
+        db_save_sticker_set(user_id, new_set_name, new_title)
+
         return True, new_sticker_set
     except TelegramBadRequest as e:
         print(f"Telegram API error: {e}")

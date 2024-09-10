@@ -6,9 +6,19 @@ kb_edit_stickerpack_inline_number = InlineKeyboardMarkup(
 
 kb_edit_stickerpack_actions_for_sticker = InlineKeyboardMarkup(
     inline_keyboard=[
-        [InlineKeyboardButton(text="Delete", callback_data="delete")],
-        [InlineKeyboardButton(text="Edit emoji", callback_data="edit_emoji")],
-        [InlineKeyboardButton(text="Next", callback_data="next")],
-        [InlineKeyboardButton(text="Done", callback_data="done")],
+        [
+            InlineKeyboardButton(text="Remove sticker", callback_data="delete"),
+            InlineKeyboardButton(text="Edit emoji", callback_data="edit_emoji"),
+        ],
+        [
+            InlineKeyboardButton(text="Done", callback_data="done"),
+            InlineKeyboardButton(text="Next", callback_data="next"),
+        ],
+    ]
+)
+
+kb_edit_stickerpack_actions_for_sticker_emoji = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [InlineKeyboardButton(text="Cancel edit", callback_data="cancel_emoji_edit")]
     ]
 )
