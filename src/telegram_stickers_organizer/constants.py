@@ -8,3 +8,6 @@ MERGE_STICKERSETS_TEXT = "Слить стикерпаки"
 
 REMOVE_LAST_STICKERS_CALLBACK = "remove_last_stickers"
 REMOVE_LAST_STICKERS_TEXT = "Удалить последние N стикеров из пака"
+
+EDIT_STICKERPACK_CALLBACK = "edit_stickerpack"
+EDIT_STICKERPACK_TEXT = "Редактировать стикерпак"
