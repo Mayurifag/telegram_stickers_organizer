@@ -18,24 +18,17 @@ A versatile Telegram bot for managing and organizing sticker packs.
 
 ## Installation
 
-1. Clone the repository:
+Clone the repository:
 
 ```sh
 git clone https://github.com/yourusername/telegram-stickers-organizer.git
 cd telegram-stickers-organizer
 ```
 
-2. Install dependencies:
+Install dependencies and copy `.env` config:
 
 ```sh
-uv venv
-uv pip install -r requirements.txt
-```
-
-3. Set up environment variables:
-
-```sh
-cp .env.example .env
+make provision
 ```
 
 Edit the `.env` file and add your Telegram Bot Token and other required

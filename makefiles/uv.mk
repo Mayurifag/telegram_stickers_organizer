@@ -13,6 +13,11 @@ add: install
 remove:
 	uv remove $(ARGS)
 
+.PHONY: provision
+provision:
+	uv sync
+	cp .env.example .env
+
 .PHONY: start
 start: start-ngrok
 	@if [ ! -f .env ]; then cp .env.example .env; echo "Created .env file, edit it and run "make start" again"; exit 1; fi
