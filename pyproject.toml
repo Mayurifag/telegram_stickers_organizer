@@ -9,6 +9,7 @@ dependencies = [
     "python-decouple>=3.8",
     "tinydb>=4.8.0",
     "emoji>=2.12.1",
+    "aiohttp-cors>=0.7.0",
 ]
 
 [build-system]

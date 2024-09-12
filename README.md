@@ -66,3 +66,8 @@ This will run both `ruff` and `flake8`.
   - `keyboard/`: Keyboard layouts
   - `middlewares/`: Middleware components
   - `repositories/`: Data storage and retrieval
+
+## Things to think
+
+- Instead of user_id I should display username. Though, it may be renamed
+- When user renames sticker pack, code is broken, I should find ways to fix it

@@ -49,10 +49,12 @@ async def process_new_title(message: Message, state: FSMContext) -> None:
     )
 
     if success and isinstance(new_sticker_set, StickerSet):
+        sticker_count = len(new_sticker_set.stickers)
         await message.answer_sticker(new_sticker_set.stickers[0].file_id)
         await message.answer(
-            f"Sticker pack <b>{sticker_pack}</b> has been copied to a new pack named "
-            f"'<b>{new_sticker_set.name}</b>' with title '<b>{new_title}</b>'.",
+            f"Sticker pack <b>{sticker_pack}</b> has been copied\n to a new pack named "
+            f"'<b>{new_sticker_set.name}</b>' \nwith title '<b>{new_title}</b>'.\n"
+            f"This new pack contains <b>{sticker_count}</b> stickers.",
             reply_markup=kb_start.kb_menu,
         )
     else:

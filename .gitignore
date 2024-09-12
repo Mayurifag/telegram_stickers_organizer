@@ -5,3 +5,4 @@ __pycache__
 .ruff_cache/
 /ngrok.pid
 /sticker_sets.json
+/cached_stickers/
