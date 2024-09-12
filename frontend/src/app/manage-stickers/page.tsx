@@ -5,7 +5,7 @@ import axios from 'axios';
 import Link from 'next/link';
 
 interface StickerSet {
-  set_name: string;
+  name: string;
   title: string;
   user_id: number;
 }
@@ -26,10 +26,10 @@ export default function ManageStickers() {
     }
   };
 
-  const deleteStickerSet = async (setName: string) => {
-    if (confirm(`Are you sure you want to delete the sticker set "${setName}"?`)) {
+  const deleteStickerSet = async (name: string) => {
+    if (confirm(`Are you sure you want to delete the sticker set "${name}"?`)) {
       try {
-        await axios.post('http://localhost:8000/api/delete_sticker_set', { set_name: setName });
+        await axios.post('http://localhost:8000/api/delete_sticker_set', { name: name });
         fetchStickerSets(); // Refresh the list after deletion
       } catch (error) {
         console.error('Error deleting sticker set:', error);
@@ -55,13 +55,13 @@ export default function ManageStickers() {
           <div key={userId}>
             <h2 className="text-xl font-bold">User_id: {userId}</h2>
             {sets.map((set) => (
-              <div key={set.set_name} className="border rounded-lg p-4 flex justify-between items-center">
+              <div key={set.name} className="border rounded-lg p-4 flex justify-between items-center">
                 <div>
                   <h3 className="text-lg font-semibold">{set.title}</h3>
-                  <p className="text-sm text-gray-500">{set.set_name}</p>
+                  <p className="text-sm text-gray-500">{set.name}</p>
                 </div>
                 <button
-                  onClick={() => deleteStickerSet(set.set_name)}
+                  onClick={() => deleteStickerSet(set.name)}
                   className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                 >
                   Delete

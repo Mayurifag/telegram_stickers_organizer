@@ -10,6 +10,7 @@ dependencies = [
     "tinydb>=4.8.0",
     "emoji>=2.12.1",
     "aiohttp-cors>=0.7.0",
+    "pylottie>=2024",
 ]
 
 [build-system]

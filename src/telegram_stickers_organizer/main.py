@@ -21,6 +21,7 @@ from telegram_stickers_organizer.api.sticker_controller import (
     get_stickerpack_preview,
     get_all_sticker_sets,
     delete_sticker_set,
+    move_sticker,
 )
 
 
@@ -51,12 +52,13 @@ def main() -> None:
     app.add_routes(
         [
             web.get("/api/stickerpacks", get_stickerpacks),
-            web.get("/api/stickerpack/{set_name}", get_stickerpack),
+            web.get("/api/stickerpack/{name}", get_stickerpack),
             web.post("/api/delete_stickers", delete_stickers),  # Add this line
             web.get("/api/sticker/{file_id}", get_sticker),
-            web.get("/api/stickerpack/{set_name}/preview", get_stickerpack_preview),
+            web.get("/api/stickerpack/{name}/preview", get_stickerpack_preview),
             web.get("/api/all_sticker_sets", get_all_sticker_sets),
             web.post("/api/delete_sticker_set", delete_sticker_set),
+            web.post("/api/move_sticker", move_sticker),
         ]
     )
 

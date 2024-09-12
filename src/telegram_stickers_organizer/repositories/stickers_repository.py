@@ -25,3 +25,7 @@ def db_get_all_sticker_sets():
 
 def db_delete_sticker_set(set_name: str):
     return sticker_sets_table.remove(Query().set_name == set_name)
+
+
+def db_get_user_id_by_set_name(set_name: str):
+    return sticker_sets_table.get(Query().set_name == set_name)["user_id"]
