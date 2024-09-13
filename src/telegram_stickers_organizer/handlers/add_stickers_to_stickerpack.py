@@ -9,9 +9,8 @@ from ..keyboard.kb_add_stickers_to_stickerpack import (
     kb_add_stickers_to_stickerpack_actions,
 )
 from ..utils.sticker_helpers import add_stickers_to_set, get_sticker_set
-from ..repositories.stickers_repository import db_get_user_sticker_sets
 from ..dispatcher import bot
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from ..keyboard.kb_stolen_stickerpacks import kb_stolen_stickerpacks
 
 router = Router()
 
@@ -25,25 +24,7 @@ class AddStickersStates(StatesGroup):
 async def add_stickers_start(callback_query: CallbackQuery, state: FSMContext) -> None:
     await callback_query.answer()
     user_id = callback_query.from_user.id
-    sticker_sets = db_get_user_sticker_sets(user_id)
-
-    if not sticker_sets:
-        await callback_query.message.edit_text(
-            "You don't have any saved sticker sets. Please 'steal' some with the bot"
-        )
-        return
-
-    keyboard = InlineKeyboardMarkup(
-        inline_keyboard=[
-            [
-                InlineKeyboardButton(
-                    text=set_info["title"],
-                    callback_data=f"select_set:{set_info['set_name']}",
-                )
-            ]
-            for set_info in sticker_sets
-        ]
-    )
+    keyboard = kb_stolen_stickerpacks(user_id)
 
     await callback_query.message.edit_text(
         "Choose a sticker set to add stickers to:", reply_markup=keyboard

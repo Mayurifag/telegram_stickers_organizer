@@ -10,6 +10,7 @@ A versatile Telegram bot for managing and organizing sticker packs.
 - Edit individual stickers in a pack (change emoji, delete)
 - Duplicate sticker packs with a new name and link
 - Convenient way to add stickers to renamed stolen sticker pack
+- Move stickers between packs from web interface
 
 ## Prerequisites
 
@@ -59,6 +60,8 @@ This will run both `ruff` and `flake8`.
 
 ## Project Structure
 
+- `makefiles/`: Makefile recipes
+- `frontend/`: Web interface for managing sticker packs (NextJS)
 - `src/telegram_stickers_organizer/`: Main application code
   - `handlers/`: Command handlers
   - `interactors/`: Business logic
@@ -71,3 +74,9 @@ This will run both `ruff` and `flake8`.
 
 - Instead of user_id I should display username. Though, it may be renamed
 - When user renames sticker pack, code is broken, I should find ways to fix it
+- There has to be a lot more of async operations in code, lots of operations
+  might be done in background. Will make them if I would need more python
+  experience
+- There has to be another, more mature way to store data — to refresh and cache
+  a lot of info in the database
+- Think about Telegram API limitations

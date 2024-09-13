@@ -6,6 +6,7 @@ from aiogram.filters import StateFilter
 from ..constants import RENAME_STICKERSET_CALLBACK
 from ..keyboard import kb_start
 from ..interactors.copy_sticker_set import copy_sticker_set
+from ..dispatcher import bot
 
 router = Router()
 
@@ -16,9 +17,12 @@ class RenameStates(StatesGroup):
 
 
 @router.callback_query(F.data == RENAME_STICKERSET_CALLBACK)
+@router.callback_query(F.data == RENAME_STICKERSET_CALLBACK)
 async def rename_stickerset(callback_query: CallbackQuery, state: FSMContext) -> None:
     await callback_query.answer()
-    await callback_query.message.edit_text("Please send a sticker from any stickerset.")
+    await bot.send_message(
+        callback_query.from_user.id, "Please send a sticker from any stickerset."
+    )
     await state.set_state(RenameStates.waiting_for_sticker)
 
 
