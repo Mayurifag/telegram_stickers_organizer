@@ -27,3 +27,4 @@ start: start-ngrok
 lint:
 	uvx ruff check
 	uvx flake8
+	cd frontend && npm run lint

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Lottie from 'lottie-react';
+import Image from 'next/image';
 
 interface Sticker {
   file_id: string;
@@ -13,6 +14,7 @@ interface RenderStickerProps {
 }
 
 export function RenderSticker({ sticker }: RenderStickerProps) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [animationData, setAnimationData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -55,6 +57,14 @@ export function RenderSticker({ sticker }: RenderStickerProps) {
       </video>
     );
   } else {
-    return <img src={stickerUrl} className="w-full h-auto max-w-[300px] object-contain p-1" />;
+    return (
+      <Image
+        src={stickerUrl}
+        alt="Sticker image"
+        width={300}
+        height={300}
+        className="w-full h-auto max-w-[300px] object-contain p-1"
+      />
+    );
   }
 }
