@@ -85,7 +85,8 @@ async def process_sticker(message: Message, state: FSMContext) -> None:
         sticker_count = len(sticker_set.stickers)
 
         await message.answer(
-            f"Sticker added successfully. The set '{sticker_set.title}' now has <b>{sticker_count}/120</b> stickers.\n"
+            f"Sticker added successfully. The set '{sticker_set.title}' now "
+            f"has <b>{sticker_count}/120</b> stickers.\n"
             "Send another sticker to add, or use the buttons below.",
             reply_markup=kb_add_stickers_to_stickerpack_actions,
         )
@@ -131,7 +132,8 @@ async def remove_previous_sticker(
                 sticker_set.stickers[-1].file_id
             )
             await callback_query.message.answer(
-                f"Previous sticker removed from the set '{sticker_set.title}'. The set now has {sticker_count}/120 stickers.\n"
+                f"Previous sticker removed from the set '{sticker_set.title}'. "
+                f"The set now has {sticker_count}/120 stickers.\n"
                 "Send another sticker to add it.",
                 reply_markup=callback_query.message.reply_markup,
             )

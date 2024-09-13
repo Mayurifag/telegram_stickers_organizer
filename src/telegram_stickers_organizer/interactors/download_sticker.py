@@ -1,7 +1,6 @@
 import os
 import mimetypes
 from telegram_stickers_organizer.dispatcher import bot
-from pylottie import convertLottie2Webp
 import gzip
 import aiofiles
 
