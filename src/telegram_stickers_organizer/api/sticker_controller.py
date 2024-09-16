@@ -6,11 +6,10 @@ from telegram_stickers_organizer.repositories.stickers_repository import (
 )
 from telegram_stickers_organizer.utils.sticker_helpers import (
     get_sticker_set,
-    add_stickers_to_set,
 )
 from telegram_stickers_organizer.dispatcher import bot
 from telegram_stickers_organizer.interactors.download_sticker import download_sticker
-import logging
+from ..interactors.move_sticker_to_another_set import move_sticker_to_another_set
 
 
 async def get_stickerpacks(request):
@@ -80,7 +79,16 @@ async def get_stickerpack_preview(request):
 
 async def get_all_sticker_sets(request):
     sticker_sets = db_get_all_sticker_sets()
-    return web.json_response(sticker_sets)
+
+    response_data = [
+        {
+            "user_id": sticker_set["user_id"],
+            "name": sticker_set["set_name"],
+            "title": sticker_set["title"],
+        }
+        for sticker_set in sticker_sets
+    ]
+    return web.json_response(response_data)
 
 
 async def delete_sticker_set(request):
@@ -102,35 +110,20 @@ async def move_sticker(request):
     file_id = data.get("file_id")
     user_id = data.get("user_id")
 
-    if not all([source_pack, destination_pack, file_id]):
+    if not all([source_pack, destination_pack, file_id, user_id]):
         return web.json_response(
             {
                 "success": False,
-                "error": "source_pack, destination_pack, and file_id are required",
+                "error": "source_pack, destination_pack, file_id, and user_id are required",
             },
             status=400,
         )
 
-    try:
-        # Get the source sticker set
-        source_set = await get_sticker_set(source_pack)
+    success, error = await move_sticker_to_another_set(
+        source_pack, destination_pack, file_id, user_id
+    )
 
-        # Find the sticker with the given file_id in the source set
-        sticker = next((s for s in source_set.stickers if s.file_id == file_id), None)
-
-        if not sticker:
-            return web.json_response(
-                {"success": False, "error": "Sticker not found in the source pack"},
-                status=404,
-            )
-
-        # Add the sticker to the destination pack
-        await add_stickers_to_set(user_id, destination_pack, [sticker])
-
-        # Remove the sticker from the source pack
-        await bot.delete_sticker_from_set(file_id)
-
+    if success:
         return web.json_response({"success": True})
-    except Exception as e:
-        logging.error(f"Error moving sticker: {e}")
-        return web.json_response({"success": False, "error": str(e)}, status=500)
+    else:
+        return web.json_response({"success": False, "error": error}, status=400)

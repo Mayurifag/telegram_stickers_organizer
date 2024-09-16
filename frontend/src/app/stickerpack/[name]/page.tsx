@@ -81,18 +81,23 @@ export default function StickerPackDetail() {
           file_id: selectedStickerForMove,
           user_id: stickerPack.user_id
         });
+
         if (response.data.success) {
+          // Refresh the sticker pack data after successful move
+          const updatedPackResponse = await axios.get(`http://localhost:8000/api/stickerpack/${name}`);
+          setStickerPack(updatedPackResponse.data);
           setSelectedStickerForMove(null);
-          setStickerPacksForMove([]);
-          const updatedPack = await axios.get(`http://localhost:8000/api/stickerpack/${stickerPack.name}`);
-          setStickerPack(updatedPack.data);
-        } else {
-          console.error(`Error moving sticker to pack: ${destinationPack.name}`, response.data.error);
         }
       } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+          alert(`Error moving sticker: ${error.response.data.error}`);
+        } else {
+          alert('An unexpected error occurred while moving the sticker');
+        }
         console.error(`Error moving sticker to pack: ${destinationPack.name}`, error);
       }
     }
+    setSelectedStickerForMove(null);
   };
 
   return (
